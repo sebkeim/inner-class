@@ -11,19 +11,26 @@ def raw_inner(x):
 class static_inner:
     """decorator for outer attribute"""
 
-    def __init__(self, cls):
+    def __init__(self, cls):    
         self.icls = cls
         self.__doc__ = cls.__doc__
 
     def __set_name__(self, owner, name):
         self.icls.outer = owner
+        # now that we have set outer we replace decorator by the actual class
         setattr(owner, name, self.icls)
 
 
 class class_inner(static_inner):
     """decorator for outer attribute, inner derivation and carried inheritance"""
+    
+    def __init__(self, cls):
+        for m in ('__get__', '__set__', '__del__'):
+            if hasattr(cls, m):
+                raise ValueError("descriptors can't be used as inner class")
+        static_inner.__init__(self, cls)
 
-    def _innerbases(self, outercls, inherited):
+    def _innerparents(self, outercls):
         mro = self.icls.mro()
         name = self.name
         innerparents = []
@@ -35,22 +42,17 @@ class class_inner(static_inner):
             else:
                 if innerparent not in mro:
                     innerparents.append(innerparent)
-        if inherited:
-            return (self.icls,) + tuple(innerparents)
-
-        if innerparents:
-            selfbases = self.icls.__bases__
-            if selfbases == (object,):
-                return tuple(innerparents)
-            return selfbases + tuple(innerparents)
-        return None
+        return tuple(innerparents)
 
     def __set_name__(self, owner, name):
         # inner derivation
         self.name = name
 
-        bases = self._innerbases(owner, False)
+        bases = self._innerparents(owner)
         if bases:
+            selfbases = self.icls.__bases__
+            if selfbases != (object,):
+                bases = selfbases + bases
             self.icls = type(self.icls)(
                 self.icls.__name__, bases, dict(self.icls.__dict__),
             )
@@ -63,7 +65,7 @@ class class_inner(static_inner):
         if cls.outer != outercls:
             assert self.name not in outercls.__dict__
 
-            bases = self._innerbases(outercls, True)
+            bases = (self.icls,) + self._innerparents(outercls)
             cls = type(cls)(
                 self.name,
                 bases,
@@ -90,14 +92,14 @@ class inner(class_inner):
 
     @classmethod
     def property(cls, icls):
-        """ replicate standard @property decorator """
+        """replicate standard @property decorator"""
         obj = cls(icls)
         obj.is_property = True
         return obj
 
     @classmethod
     def cached_property(cls, icls):
-        """ replicate sdtlib @property decorator """
+        """replicate sdtlib @cached_property decorator"""
         obj = cls(icls)
         obj.is_property = True
         obj.is_cached = True

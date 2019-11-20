@@ -94,7 +94,23 @@ class TestRaw(TestBase):
         self.assertFalse(issubclass(outer.inner1, base2.inner1))
         self.assertTrue(issubclass(outer.inner3, base1.inner3))
         self.assertTrue(outer.inner2 is base1.inner2)
-
+    
+    # static_inner allow descriptors but class_inner raise an exception
+    def _inner_get(self):
+        class Outer:
+            @self.inner_mode
+            class inner1:
+                def __get__(self, outerobj, outercls):
+                    pass
+    def _inner_set(self):
+        class Outer:
+            @self.inner_mode
+            class inner1:
+                def __get__(self, outerobj, value):
+                    pass
+    def test_descriptor(self):
+        self._inner_get()
+        self._inner_set()    
 
 class TestStatic(TestRaw):
     inner_mode = staticmethod(static_inner)
@@ -173,6 +189,9 @@ class TestClass(TestStatic):
         self.assertTrue(issubclass(outer.inner2, base1.inner2))
         self.assertTrue(issubclass(outer.inner2, base2.inner2))
 
+    def test_descriptor(self):
+        self.assertRaises(ValueError, self._inner_get)
+        self.assertRaises(ValueError, self._inner_set)
 
 class TestInner(TestClass):
     inner_mode = staticmethod(inner)

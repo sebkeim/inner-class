@@ -16,7 +16,7 @@ We could replace decorator by a base class
         pass
 ```
 
-This would need a custom metaclass (for set_name and __get__)
+This would require a custom metaclass (for ```set_name``` and ```__get__```)
 
 
 ### stacking @property and @cached_property
@@ -30,7 +30,13 @@ This would need a custom metaclass (for set_name and __get__)
         pass
 ```
 
-Current standard library implementation of @property and @cached_property are only method decorators .
+Current standard library implementation of @property and @cached_property work
+only on methods.
 A fix that extend usage on arbitrary callable would not be that easy.
+
+Currently there is no compelling advantage to replace the class method decorators
+and the best solution would probably to define ```__property__``` and 
+```___cached_property___``` special methods.
+
  
 
