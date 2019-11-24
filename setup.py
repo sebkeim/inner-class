@@ -1,9 +1,80 @@
 from setuptools import setup
 
+long_description = """
+
+Python does have built-in support for nested or inner classes. Theses classes can be used
+when you do not want to expose the class, and it is closely related to another class.
+
+Unfortunately this support is rather minimalistic and lack some useful features :
+
+
+```python
+ class MyOuter:
+    @inner
+    class MyInner:
+       def hello(self):
+           print('Hello')
+```
+
+### outer attribute
+
+The inner class gain an 'outer' attribute that reference its outer class.
+
+```python
+  >>> MyOuter.MyInner.outer 
+  <class '__main__.MyOuter'>
+```
+
+
+### inner derivation
+ 
+When the outer class is derived, the inner class is also derived in order
+to point at the derived outer class.
+
+```python
+ class MyChildOuter(MyOuter):
+    pass
+
+ >>> MyChildOuter.MyInner.outer
+ <class '__main__.MyChildOuter'>
+```
+
+### carried inheritance
+
+When the inner class is redefined in an outer subclass, it will automatically
+derivate from the inner class of the outer superclass.
+
+
+```python
+  class MyChildOuter(MyOuter):
+     class MyInner:
+       pass
+
+  >>> MyChildOuter.MyInner().hello()
+  Hello
+```
+
+###  inner instantiation
+ 
+the outer attribute of an inner instance store it's outer instance
+
+```python
+  outer = MyOuter()
+  
+  >>> outer
+  <__main__.MyOuter object at 0x03BAA990>
+  >>> outer.MyInner().outer
+  <__main__.MyOuter object at 0x03BAA990>
+```
+
+"""
+
 setup(
     name="inner-class",
     version="0.1",
     description="Advanced inner classes for Python",
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     author="S.Keim",
     author_email="s.keim@free.fr",
     license="MIT",
@@ -18,3 +89,4 @@ setup(
     ],
     python_requires=">=3.7",
 )
+

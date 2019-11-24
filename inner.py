@@ -111,17 +111,17 @@ class inner(class_inner):
             return icls
         # properties
         if self.is_property:
-            a = icls()
-            a.outer = outerobj
+            innerobj = icls()
+            innerobj.outer = outerobj
             if self.is_cached:
-                setattr(outerobj, self.name, a)
-            return a
+                setattr(outerobj, self.name, innerobj)
+            return innerobj
         # constructor
         def ctor(*args, **kw):
-            a = icls.__new__(icls, *args, **kw)
-            a.outer = outerobj
-            a.__init__(*args, **kw)
-            return a
+            innerobj = icls.__new__(icls, *args, **kw)
+            innerobj.outer = outerobj
+            innerobj.__init__(*args, **kw)
+            return innerobj
 
         update_wrapper(ctor, icls.__init__)
         return ctor
