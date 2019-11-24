@@ -7,7 +7,7 @@ setup(
     author="S.Keim",
     author_email="s.keim@free.fr",
     license="MIT",
-    packages=["inner"],
+    py_modules=["inner"],
     zip_safe=True,
     test_suite="test",
     url="https://github.com/sebkeim/inner-class",
