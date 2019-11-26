@@ -17,7 +17,7 @@ class static_inner:
 
     def __set_name__(self, owner, name):
         self.icls.outer = owner
-        # now that we have set outer we replace decorator by the actual class
+        # now that outer is set, replace decorator by the actual class
         setattr(owner, name, self.icls)
 
 
@@ -25,8 +25,8 @@ class class_inner(static_inner):
     """decorator for outer attribute, inner derivation and carried inheritance"""
     
     def __init__(self, cls):
-        for m in ('__get__', '__set__', '__del__'):
-            if hasattr(cls, m):
+        for method in ('__get__', '__set__', '__del__'):
+            if hasattr(cls, method):
                 raise ValueError("descriptors can't be used as inner class")
         static_inner.__init__(self, cls)
 

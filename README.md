@@ -56,7 +56,7 @@ derivate from the inner class of the outer superclass.
   Hello
 ```
 
-This may seem a bit implicit but is particularly desirable for type conformance
+This may seem a bit implicit but is useful for type conformance
 (code must continue to work when the parent class is replaced by a child class),
 particularly with mix-in classes.
 
@@ -74,7 +74,7 @@ the outer attribute of an inner instance store it's outer instance
   <__main__.MyOuter object at 0x03BAA990>
 ```
 
-This attribute is already available into inner __init__ constructor.
+This attribute is already available into inner ```__init__``` constructor.
 
 If the inner object  is created directly from the outer  outer class (and not an instance), it will still store the outer class.
 
@@ -95,11 +95,11 @@ This module provide 6 decorators :
 
 **@static_inner** : only keep outer attribute feature
 
-**@raw_inner** : a do nothing, useful if  eventually the language would change in the futur to make @inner the default behavior of inner class in python
+**@raw_inner** : a do nothing, useful if the language would change in the futur to make @inner the default behavior of inner class in python
 
 **@inner.property** : access to target from outer instance automatically create an instance of the inner class 
 
-**@inner.cached_property** :  the  inner instance is only created once and then cached in the __dict__ of the outer instance
+**@inner.cached_property** :  the  inner instance is only created once and then cached in the ```__dict__``` of the outer instance
 
 
 

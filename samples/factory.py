@@ -16,24 +16,24 @@ class Product:
             obj.param3 = param3
             return obj
             
-# Outer factory : a it less natural
+# Outer factory is less natural and won't work very well for subclassing Product
 class Factory:
     param1 : str
     param2 : int
     @inner
-    class product:
+    class Product:
         def __init__(self, param3):
             self.param3 = param3
         def stuff(self):
             return do_stuff(self.param3, self.outer.param1)
 
 
-# We can del factory reference after use
+# But can del factory reference after use
 class Factory:
     param1 : str
     param2 : int
     @inner
-    class product:
+    class Product:
         def __init__(self, param3):
             self.param3 = param3
             self.param1 = self.outer.param1
