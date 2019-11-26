@@ -2,10 +2,7 @@ from setuptools import setup
 
 long_description = """
 
-Python does have built-in support for nested or inner classes. Theses classes can be used
-when you do not want to expose the class, and it is closely related to another class.
-
-Unfortunately this support is rather minimalistic and lack some useful features :
+This module add some useful features to Python inner classes :
 
 
 ```python
@@ -71,7 +68,7 @@ the outer attribute of an inner instance store it's outer instance
 
 setup(
     name="inner-class",
-    version="0.1",
+    version="0.2",
     description="Advanced inner classes for Python",
     long_description=long_description,
     long_description_content_type='text/markdown',

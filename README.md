@@ -1,12 +1,15 @@
 # inner-class
 Advanced inner classes for Python
 
-An [inner or  nested class](https://en.wikipedia.org/wiki/Inner_class)  is a class declared entirely within the body of another class or interface
+An [inner or  nested class](https://en.wikipedia.org/wiki/Inner_class)  is a class
+declared entirely within the body of another class.
+
+Theses classes [can be used](https://www.novixys.com/blog/nested-inner-classes-python)
+when you do not want to expose the class, and it is closely related to another class.
 
 ## The four features
 
-Python does have built-in support for nested or inner classes. Theses classes [can be used](https://www.novixys.com/blog/nested-inner-classes-python)
-when you do not want to expose the class, and it is closely related to another class.
+Python does have built-in support for inner classes. 
 
 Unfortunately this support is rather minimalistic and lack some useful features :
 
@@ -79,14 +82,14 @@ This attribute is already available into inner ```__init__``` constructor.
 If the inner object  is created directly from the outer  outer class (and not an instance), it will still store the outer class.
 
 
-usage
-=====
+## Usage
 
 See the ```samples``` directory.
 
 
  
-###  Implementation
+### implementation
+
 This module provide 6 decorators :
 
 **@inner** : support the 4 features
@@ -103,8 +106,7 @@ This module provide 6 decorators :
 
 
 
-
-###  install
+### install
 
 The module have been tested on Python 3.7
 
